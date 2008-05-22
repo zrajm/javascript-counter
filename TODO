@@ -1,0 +1,15 @@
+TODO
+
+ o Stylesheet width should be set by javascript, eliminating the need for having
+   different stylesheets set manually for each counter.
+
+ o The counter should not consist of a continuously updated string of HTML tags,
+   with style="" attributes set differently for each iteration (as it is now) --
+   but instead only the CSS should be dynamically updated.
+
+ o XMLHttpRequests should be integrated into the objects
+
+ o Isolation! Somehow, if one has several objects on the same HTML page, the
+   different objects influence each other. -- Worked around this by using frames
+   but that doesn't solve/explain the underlying problem (see examples in
+   directory "two").

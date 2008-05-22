@@ -7,6 +7,7 @@ function Counter(opts) {
 
     this.htmlId        = ''; // stylesheet id name of HTML element
     this.fetchDelay    = 5 * 60 * 1000; // in milliseconds
+//    this.fetchDelay    = 1000; // in milliseconds
     this.fetchUrl      = ''; // url from where to fetch counter value
     this.fetchCount    = 0;  // number of times fetched (DEBUG)
     this.fetchValue    = 0;  // latest fetched value
@@ -43,7 +44,7 @@ function Counter(opts) {
     /* Update and draw the counter. If increment is specified (it usually isn't)
      * then <increment> is added to the counter instead of <this.countStep>
      * before the counter is redrawn. */
-    this.countInc = function(increment) {
+    this.counterInc = function(increment) {
 	if (arguments.length == 0) {
 	    increment = this.countStep;
 	}
@@ -149,9 +150,9 @@ function ajaxDone(callback) {
 
 /* init invoices counter object */
 var invoices = new Counter({
-	htmlId: 'counter',
-	fetchUrl: "../cgi-bin/proxy.cgi?https://kredstat:4430/invs.yaws",
-	fetchCallback: 'setReturnedValue',
+	htmlId: 'invoices',
+	fetchUrl: "../../cgi-bin/proxy.cgi?https://kredstat:4430/invs.yaws",
+	fetchCallback: 'invoicesSetReturnedValue',
 	countWidth: 7,
 	countStep: .1,
 	imageName:  'digits.jpg',
@@ -159,10 +160,27 @@ var invoices = new Counter({
 	imageWidth:  158
     });
 
+/* init goal 2008 counter object */
+var goal2008 = new Counter({
+	htmlId: 'goal2008',
+	fetchUrl: "../../cgi-bin/proxy.cgi?https://kredstat:4430/goal_2008.yaws",
+	fetchCallback: 'goal2008SetReturnedValue',
+	countWidth: 6,
+	countStep: .1,
+	imageName:  'digits.jpg',
+	imageHeight: 210,
+	imageWidth:  158
+    });
 
-function setReturnedValue(number) {
+
+function invoicesSetReturnedValue(number) {
     invoices.fetchUpdate(parseInt(number));
 }
+
+function goal2008SetReturnedValue(number) {
+    goal2008.fetchUpdate(parseInt(number));
+}
+
 
 function init() {
     invoices.fetch();
@@ -170,13 +188,15 @@ function init() {
     // fetch new values from server
     setInterval(function() {
 	    invoices.fetch();
+	    goal2008.fetch();
 	}, invoices.fetchDelay);
-
 
     // update counter
     setInterval(function() {
-	    invoices.countInc();
+	    invoices.counterInc();
+	    goal2008.counterInc();
 	}, invoices.countDelay);
+
 }
 
 window.onload = init;

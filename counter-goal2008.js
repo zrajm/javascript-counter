@@ -1,17 +1,18 @@
-function Counter(opts) {
-    this.imageName     = '';
-    this.imageWidth    = 0;
-    this.imageHeight   = 0;
 
-    this.htmlId        = '';
-    this.fetchDelay    = 5 * 60 * 1000;
-    this.fetchUrl      = '';
-    this.fetchCount    = 0;
-    this.fetchValue    = 0;
-    this.fetchCallback = '';
+// "Counter" object definition
+function Counter(opts) {
+    this.imageName     = ''; // image containing digits 0-9 + 0
+    this.imageWidth    = 0;  // image width
+    this.imageHeight   = 0;  // height of one digit in image
+
+    this.htmlId        = ''; // stylesheet id name of HTML element
+    this.fetchDelay    = 5 * 60 * 1000; // in milliseconds
+    this.fetchUrl      = ''; // url from where to fetch counter value
+    this.fetchCount    = 0;  // number of times fetched (DEBUG)
+    this.fetchValue    = 0;  // latest fetched value
+    this.fetchCallback = ''; // function to set fetchValue
     this.fetch         = function() {
 	this.fetchCount ++;
-	//ajax(this.fetchUrl, 'returnStuff');
 	ajax(this.fetchUrl, this.fetchCallback);
     }
     this.fetchUpdate = function(number) {
@@ -29,20 +30,19 @@ function Counter(opts) {
 	}
     }
 
-    // counter stuff
-    this.count       = 0;
-    this.countStep   = .01;
-    this.countWidth  = 1;
-    this.countDelay  = 100;
-    this.countBeg    = 0;
-    this.countEnd    = 0;
-    /* return current counter, zero-padded to current counter length */
-    this.countGet = function() {
-	return zeroPad(this.count, this.countWidth);
-    };
+    /* counter stuff */
+    /* settings initialised by user */
+    this.countWidth  = 1;   // number of digits in counter
+    this.countDelay  = 100; // how often to redraw counter
+    /* settings continuously updated */
+    this.count       = 0;   // counter's current value
+    this.countStep   = .01; // how fast to increment counter
+    this.countBeg    = 0;   // to count from
+    this.countEnd    = 0;   // to count to (counter will never go beyond this)
 
-    /* <increment>, if provided will increase the counter. Decimals will cause
-     * the odometer to rotate. */
+    /* Update and draw the counter. If increment is specified (it usually isn't)
+     * then <increment> is added to the counter instead of <this.countStep>
+     * before the counter is redrawn. */
     this.countInc = function(increment) {
 	if (arguments.length == 0) {
 	    increment = this.countStep;
@@ -151,7 +151,7 @@ function ajaxDone(callback) {
 var invoices = new Counter({
 	htmlId: 'counter',
 	fetchUrl: "../cgi-bin/proxy.cgi?https://kredstat:4430/goal_2008.yaws",
-	fetchCallback: 'returnInvoice',
+	fetchCallback: 'setReturnedValue',
 	countWidth: 6,
 	countStep: .1,
 	imageName:  'digits.jpg',
@@ -160,7 +160,7 @@ var invoices = new Counter({
     });
 
 
-function returnInvoice(number) {
+function setReturnedValue(number) {
     invoices.fetchUpdate(parseInt(number));
 }
 
