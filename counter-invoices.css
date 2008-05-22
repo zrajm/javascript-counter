@@ -1,0 +1,48 @@
+/* table for vertical centering page contents */
+/* FIXME: this should be done with a "body {}"-thingy instead? how? */
+.centertable {
+    width:          100%;
+    height:         100%;
+    border-spacing: 0px;
+    border:         0px solid transparent;
+
+    /* if text is wanted, too, use below */
+    //text-align:     center;
+    //color:          #2f7eaf;
+    //font-family:    sans-serif;
+    //font-size:      large;
+    //font-weight:    bold;
+}
+
+#counter {
+    width:      1106px; /* seven digits */ /* FIXME set by javascript */
+    height:     210px;                     /* FIXME set by javascript */
+    border:     18px solid #2f7eaf;
+    padding:    12px;
+    margin:     .25em auto; /* center horisontally */
+    text-align: left;
+    overflow:   hidden;
+}
+
+
+img {
+    position: relative;
+    /* FIXME below set by javascript */
+    /*
+    height: 2310px;
+    width: 158px;
+    */
+}
+
+/* FIXME below set by javascript */
+/*
+#x1  { top:     0px; }
+#x2  { top:  -210px; }
+#x3  { top:  -420px; }
+#x4  { top:  -630px; }
+#x5  { top:  -840px; }
+#x6  { top: -1050px; }
+#x7  { top: -1260px; }
+*/
+
+/* eof */
